@@ -8,7 +8,7 @@ function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
-    const CartItems = useSelector(state => state.cart.items); // ******** to be edited PLEASE DON'T FORGET.
+    const cartItems = useSelector(state => state.cart.items); // ******** to be edited PLEASE DON'T FORGET.
     
 
     const plantsArray = [
@@ -270,7 +270,7 @@ function ProductList({ onHomeClick }) {
       };
 
     const calculateTotalQuantity = () => {
-        return CartItems ? CartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+        return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
     }; // ******** to be edited PLEASE DON'T FORGET.
       
     return (
@@ -311,13 +311,21 @@ function ProductList({ onHomeClick }) {
                                         <div className="product-title">{plant.name}</div> {/* Display plant name */}
                                         {/* Display other plant details like description and cost */}
                                         <div className="product-description">{plant.description}</div> {/* Display plant description */}
-                                        <div className="product-cost">${plant.cost}</div> {/* Display plant cost */}
-                                        <button
-                                            className="product-button"
-                                            onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
-                                        >
-                                            Add to Cart
-                                        </button>
+                                        <div className="product-cost">{plant.cost}</div> {/* Display plant cost */}
+                                        {![cartItems.name] ? (
+                                            <button
+                                                className="product-button"
+                                                onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
+                                            >
+                                                Add to Cart
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className="product-button added-to-cart" //  to be edited PLEASE DON'T FORGET.
+                                            >
+                                                Added to Cart
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -326,10 +334,11 @@ function ProductList({ onHomeClick }) {
 
                 </div>
             ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
+                <CartItem onContinueShopping={handleContinueShopping()} />
             )}
         </div>
     );
 }
 
 export default ProductList;
+
