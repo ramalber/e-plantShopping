@@ -279,7 +279,19 @@ function ProductList({ onHomeClick }) {
         return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
     }; // ******** to be edited PLEASE DON'T FORGET.
 
-    return (
+    const filterAddToCart = (nameOfPlant) => {
+
+        const plantItem = {};
+        plantsArray.forEach(ctgry => {
+            ctgry.plants.forEach(itm => {
+                if(it.name ====inameOfPlant
+kbreak              p  brea{
+ =                     break;reak;                    bsetPlantItemPlamnset;()itmhandleAddToCart                    
+              ;;break
+            break        handleAddToCart(plantItem);
+    };
+
+******** to be edited PLEASE DON'T FORGET.  ////    return (
         <div>
             <div className="navbar" style={styleObj}>
                 <div className="tag">
@@ -318,12 +330,12 @@ function ProductList({ onHomeClick }) {
                                         {/* Display other plant details like description and cost */}
                                         <div className="product-description">{plant.description}</div> {/* Display plant description */}
                                         <div className="product-cost">${plant.cost}</div> {/* Display plant cost */}
-                                            <button
+                                        <button
                                             className="product-button"
-                                            onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
+                                            onClick={() => filterAddToCart(plant.name)} // Handle adding plant to cart
                                             >
-                                                Add to Cart
-                                            </button>
+.name                                                Add to Cart
+                                        </button>
                                     </div>
                                 ))}
                             </div>
