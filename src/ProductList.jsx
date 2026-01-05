@@ -99,7 +99,7 @@ function ProductList({ onHomeClick }) {
             category: "Insect Repellent Plants",
             plants: [
                 {
-                    name: "oregano",
+                    name: "Oregano",
                     image: "https://cdn.pixabay.com/photo/2015/05/30/21/20/oregano-790702_1280.jpg",
                     description: "The oregano plants contains compounds that can deter certain insects.",
                     cost: "$10"
@@ -275,10 +275,15 @@ function ProductList({ onHomeClick }) {
         return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
     }; // ******** to be edited PLEASE DON'T FORGET.
 
+    const changeAddToCart = (itemName) => {
+        delete addedToCart[itemName];
+    }; // ******** to be edited PLEASE DON'T FORGET.
+
     useEffect(() => {
         console.log(addedToCart); // ******** to be edited PLEASE DON'T FORGET.
         console.log(cartItems);
         setQuantityTotal(calculateTotalQuantity());
+
     }, [cartItems]);
      //******** to be edited PLEASE DON'T FORGET.
     
@@ -290,7 +295,7 @@ function ProductList({ onHomeClick }) {
                     <div className="luxury">
                         <img src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png" alt="" />
                         <a href="/" onClick={(e) => handleHomeClick(e)}>
-                            <div>
+                            <div className="tag_home_link">
                                 <h3 style={{ color: 'white' }}>Paradise Nursery</h3>
                                 <i style={{ color: 'white' }}>Where Green Meets Serenity</i>
                             </div>
@@ -299,8 +304,8 @@ function ProductList({ onHomeClick }) {
 
                 </div>
                 <div style={styleObjUl}>
-                    <div> <a href="#" onClick={(e) => handlePlantsClick(e)} style={styleA}>Plants</a></div>
-                    <div> <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}><h1 className='cart'>testing<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68"><rect width="156" height="156" fill="none"></rect><text fill="#ffffff" fontSize="45" fontFamily="Verdana" x="50" y="50">{quantityTotal}</text><circle cx="80" cy="216" r="12"></circle><circle cx="184" cy="216" r="12"></circle><path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" id="mainIconPathAttribute"></path></svg></h1></a></div> {/*to be edited PLEASE DON'T FORGET.*/}
+                    <div style={{marginLeft: '230px'}}><a href="#" onClick={(e) => handlePlantsClick(e)} style={styleA}>Plants</a></div>
+                    <div><a href="#" onClick={(e) => handleCartClick(e)} style={styleA}><h1 className='cart'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68"><rect width="156" height="156" fill="none"></rect><text fill="#ffffff" fontSize="70" fontFamily="Verdana" x="90" y="150">{quantityTotal}</text><circle cx="80" cy="216" r="12"></circle><circle cx="184" cy="216" r="12"></circle><path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" id="mainIconPathAttribute"></path></svg></h1></a></div> {/*to be edited PLEASE DON'T FORGET.*/}
                 </div>
             </div>
             {!showCart ? (
@@ -308,26 +313,26 @@ function ProductList({ onHomeClick }) {
                     {plantsArray.map((category) => ( // Loop through each category in plantsArray - deleted [index] map parameter
                         <div key={category.category}> {/* Unique key for each category div */}
                             <h1>
-                            <div>{category.category}</div> {/* Display the category name */}
+                            <div className="plant_heading">{category.category}</div> {/* Display the category name */}
                             </h1>
                             <div className="product-list"> {/* Container for the list of plant cards */}
                                 {category.plants.map((plant) => ( // Loop through each plant in the current category - deleted [plantIndex] map parameter
                                     <div className="product-card" key={plant.name}> {/* Unique key for each plant card */}
+                                        <div className="product-title">{plant.name}</div> {/* Display plant name */}
                                         <img 
                                         className="product-image" 
                                         src={plant.image} // Display the plant image
                                         alt={plant.name} // Alt text for accessibility
                                         />
-                                        <div className="product-title">{plant.name}</div> {/* Display plant name */}
                                         {/* Display other plant details like description and cost */}
+                                        <div className="product-price">{plant.cost}</div> {/* Display plant cost */}
                                         <div className="product-description">{plant.description}</div> {/* Display plant description */}
-                                        <div className="product-cost">{plant.cost}</div> {/* Display plant cost */}
                                         <button
-                                            className="product-button"
+                                            className={`product-button ${addedToCart[plant.name] ? 'added-to-cart' : ''}`}
                                             key={plant.name}
-                                            onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
+                                            onClick={addedToCart[plant.name] ? null : (() => handleAddToCart(plant))} // Handle adding plant to cart
                                         >
-                                            Add to Cart
+                                            {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
                                         </button>
                                     </div>
                                 ))}
@@ -337,7 +342,7 @@ function ProductList({ onHomeClick }) {
 
                 </div>
             ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
+                <CartItem manipAddToCart={changeAddToCart} onContinueShopping={handleContinueShopping}/>
             )}
         </div>
     );

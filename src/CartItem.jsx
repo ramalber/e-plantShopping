@@ -3,15 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ manipAddToCart, onContinueShopping }) => {   //const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
 
-    const total = cart.foreach(item => item.quantity * parseFloat(item.cost.substring(1)));
-    return total;
+    return cart.reduce((total, item) => total + (item.quantity * parseFloat(item.cost.substring(1))), 0);
     
   };
 
@@ -33,12 +32,14 @@ const CartItem = ({ onContinueShopping }) => {
     else
     {
         dispatch(removeItem(item.name));
+        manipAddToCart(item.name); //******** to be edited PLEASE DON'T FORGET.
     }
   };
 
   const handleRemove = (item) => {
 
     dispatch(removeItem(item.name));
+    manipAddToCart(item.name); //******** to be edited PLEASE DON'T FORGET.
 
   };
 
@@ -56,7 +57,7 @@ const CartItem = ({ onContinueShopping }) => {
 
   return (
     <div className="cart-container">
-      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <h2 className="total_cart_amount" style={{ color: 'black' }}>{`Total Cart Amount: $${calculateTotalAmount()}`}</h2>
       <div>
         {cart.map(item => (
           <div className="cart-item" key={item.name}>
@@ -86,5 +87,4 @@ const CartItem = ({ onContinueShopping }) => {
 };
 
 export default CartItem;
-
 
