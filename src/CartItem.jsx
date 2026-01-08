@@ -3,16 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ manipAddToCart, onContinueShopping }) => {   //const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ manipAddToCart, onContinueShopping }) => {  
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
 
-    return cart.reduce((total, item) => total + (item.quantity * parseFloat(item.cost.substring(1))), 0);
-    
-  };
+    let total = 0;
+
+    cart.forEach(items =>
+      {
+        total = total + (items.quantity * parseFloat(items.cost.substring(1)));
+      }
+    );
+    return total;
+}; //******** to be edited PLEASE DON'T FORGET.
 
   const handleContinueShopping = (e) => {
 
@@ -52,7 +58,7 @@ const CartItem = ({ manipAddToCart, onContinueShopping }) => {   //const CartIte
   };
 
   const handleCheckoutShopping = (e) => {
-    alert('Functionality to be added for future reference');
+    alert('Functionality to be added for future reference or Coming Soon.');
   };
 
   return (
